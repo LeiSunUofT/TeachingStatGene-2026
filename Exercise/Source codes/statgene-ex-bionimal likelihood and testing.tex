@@ -1,0 +1,569 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{mathptmx}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+\centerline{\bf{Question: MLE, LRT, Wald, Score, and Pearson tests for a Binomial example}}
+
+A coin is tossed $n=100$ times, and $x=57$ heads are observed. Let
+\[
+X\sim \mathrm{Binomial}(n,\theta),
+\]
+where $\theta$ is the probability of heads. Consider
+\[
+H_0:\theta=\theta_0=0.5
+\qquad \text{versus} \qquad
+H_1:\theta\neq 0.5.
+\]
+
+Answer the following questions. 
+%For each test, first write the general vector form, then reduce it to the one-parameter binomial case. 
+Show the derivation of each statistic. Use significance level $\alpha=0.05$.
+
+\begin{enumerate}[label=\textbf{(\alph*)}, leftmargin=1.2cm]
+\item \textbf{MLE} Derive the MLE of $\theta$. Is this MLE an unbiased estimator of $\theta$? Provide the proof. 
+\item \textbf{Likelihood ratio test} Derive and compute the LRT statistic.
+\item \textbf{Wald test} Derive and compute the Wald statistic. 
+\item \textbf{Score test} Derive and compute the Score statistic. 
+\item \textbf{Pearson chi-square test} Compute the Pearson chi-square statistic.
+\item \textbf{Derive the Pearson chi-square test from the LRT principle}. (Hint: Second-order Taylor expansion $\log(1+u)=u-\frac{u^2}{2}+O(u^3)$)
+
+
+\end{enumerate}
+
+\newpage
+
+\centerline{\bf{Extended Solution}}
+\smallskip
+
+{\it Questions didn't require solutions in vector-form, but students are expected to master it. Some of the questions and solutions might be discussed during classes or office hours, but students are expected to review the solutions on their own and ask questions during office hours.} \\
+
+{\bf 1. Likelihood and MLE}
+
+The likelihood is
+\[
+L(\theta)=\binom{n}{x}\theta^x(1-\theta)^{n-x}.
+\]
+
+Ignoring the constant (why?), the log-likelihood (why log?) is
+\[
+\ell(\theta)=x\log\theta+(n-x)\log(1-\theta).
+\]
+
+The score function is
+\[
+S(\theta)=\ell'(\theta)=\frac{\partial \ell(\theta)}{\partial \theta}
+=\frac{x}{\theta}-\frac{n-x}{1-\theta}
+=\frac{x-n\theta}{\theta(1-\theta)}.
+\]
+
+Set $S(\theta)=0$:
+\[
+\frac{x}{\theta}=\frac{n-x}{1-\theta}.
+\]
+Thus,
+\[
+\hat\theta=\frac{x}{n}.
+\]
+
+For $0<x<n$,
+\[
+\ell''(\theta)=-\frac{x}{\theta^2}-\frac{n-x}{(1-\theta)^2}<0,
+\]
+so $\hat \theta$ is the unique maximizer.\\
+
+To discuss unbiasedness, we should distinguish between an observed estimate and an estimator. Before observing the data, write
+\[
+\hat\theta=\frac{X}{n},
+\qquad X\sim \mathrm{Binomial}(n,\theta).
+\]
+Because
+\[
+E_\theta(X)=n\theta,
+\]
+we have
+\[
+E_\theta(\hat\theta)
+=E_\theta\left(\frac{X}{n}\right)
+=\frac{E_\theta(X)}{n}
+=\frac{n\theta}{n}
+=\theta.
+\]
+Therefore $\hat\theta=X/n$ is an unbiased estimator of $\theta$. After observing $X=x$, the numerical estimate is $\hat\theta=x/n=57/100=0.57$. (Is this MLE also a MVUE?)
+
+
+{\bf 2. Score vector and Fisher information}
+
+For a general parameter vector
+\[
+\boldsymbol\theta=(\theta_1,\ldots,\theta_k)^T,
+\]
+the score vector is
+\[
+S(\boldsymbol\theta)
+=\frac{\partial \ell(\boldsymbol\theta)}{\partial \boldsymbol\theta}
+=\left(
+\frac{\partial \ell}{\partial \theta_1},\ldots,
+\frac{\partial \ell}{\partial \theta_k}
+\right)^T.
+\]
+
+The Fisher information matrix is
+\[
+I(\boldsymbol\theta)
+=E_{\boldsymbol\theta}\{S(\boldsymbol\theta)S(\boldsymbol\theta)^T\}
+=E_{\boldsymbol\theta}\left\{-\frac{\partial^2\ell(\boldsymbol\theta)}
+{\partial \boldsymbol\theta\partial \boldsymbol\theta^T}\right\}.
+\]
+
+In the one-parameter binomial case,
+\[
+S(\theta)=\frac{x-n\theta}{\theta(1-\theta)}.
+\]
+Also,
+\[
+-\ell''(\theta)=\frac{X}{\theta^2}+\frac{n-X}{(1-\theta)^2}, 
+\]
+and $E_{\theta}(X)=n\theta$, and 
+\[
+I(\theta)
+=E_\theta\{-\ell''(\theta)\}
+=\frac{n\theta}{\theta^2}+\frac{n(1-\theta)}{(1-\theta)^2}
+=\frac{n}{\theta}+\frac{n}{1-\theta}
+=\frac{n}{\theta(1-\theta)}.
+\]
+\smallskip
+
+{\bf 3. Likelihood ratio test}
+
+General vector form: suppose $H_0$ imposes $r$ restrictions on $\boldsymbol\theta$. Let $\hat{\boldsymbol\theta}$ be the unrestricted MLE and let $\tilde{\boldsymbol\theta}$ be the restricted MLE under $H_0$. The likelihood ratio test statistic is
+\[
+T_{\mathrm{LRT}}
+=2\{\ell(\hat{\boldsymbol\theta})-\ell(\tilde{\boldsymbol\theta})\}
+\overset{approx}{\sim}\chi^2_r.
+\]
+
+For the one-parameter null $H_0:\theta=\theta_0$, we have $r=1$, $\tilde\theta=\theta_0$, and $\hat\theta=x/n$. Thus
+\[
+T_{\mathrm{LRT}}
+=2\{\ell(\hat\theta)-\ell(\theta_0)\}
+\overset{approx}{\sim}\chi^2_1.
+\]
+
+Substitute the binomial log-likelihood:
+\[
+T_{\mathrm{LRT}}
+=2\left[
+ x\log\left(\frac{\hat\theta}{\theta_0}\right)
+ +(n-x)\log\left(\frac{1-\hat\theta}{1-\theta_0}\right)
+\right].
+\]
+
+Since $\hat\theta=x/n$,
+\[
+T_{\mathrm{LRT}}
+=2\left[
+ x\log\left(\frac{x}{n\theta_0}\right)
+ +(n-x)\log\left(\frac{n-x}{n(1-\theta_0)}\right)
+\right].
+\]
+
+{\bf 4. Wald test}
+
+General vector form: for testing $H_0:\boldsymbol\theta=\boldsymbol\theta_0$, the Wald statistic is
+\[
+T_{\mathrm{Wald}}
+=(\hat{\boldsymbol\theta}-\boldsymbol\theta_0)^T
+\{\mathrm{Cov}(\hat{\boldsymbol\theta})\}^{-1}
+(\hat{\boldsymbol\theta}-\boldsymbol\theta_0).
+\]
+
+Using the large-sample approximation
+\[
+\mathrm{Cov}(\hat{\boldsymbol\theta})\approx I(\hat{\boldsymbol\theta})^{-1},
+\]
+we write
+\[
+T_{\mathrm{Wald}}
+\approx
+(\hat{\boldsymbol\theta}-\boldsymbol\theta_0)^T
+I(\hat{\boldsymbol\theta})
+(\hat{\boldsymbol\theta}-\boldsymbol\theta_0)
+\overset{approx}{\sim}\chi^2_k.
+\]
+
+In the one-parameter binomial case,
+\[
+T_{\mathrm{Wald}}
+=(\hat\theta-\theta_0)^2 I(\hat\theta).
+\]
+Because
+\[
+I(\hat\theta)=\frac{n}{\hat\theta(1-\hat\theta)},
+\]
+we get
+\[
+T_{\mathrm{Wald}}
+=\frac{n(\hat\theta-\theta_0)^2}{\hat\theta(1-\hat\theta)}
+=\frac{(\hat\theta-\theta_0)^2}{\hat\theta(1-\hat\theta)/n}
+\overset{approx}{\sim}\chi^2_1.
+\]
+
+Equivalently,
+\[
+Z_{\mathrm{Wald}}
+=\frac{\hat\theta-\theta_0}{\sqrt{\hat\theta(1-\hat\theta)/n}},
+\qquad
+T_{\mathrm{Wald}}=Z_{\mathrm{Wald}}^2.
+\]
+\smallskip
+
+{\bf 5. Score test}
+
+General vector form: for the simple vector null
+\[
+H_0: \boldsymbol\theta=\boldsymbol\theta_0,
+\]
+the score test evaluates the score and Fisher information under the null:
+\[
+T_{\mathrm{Score}}
+=S(\boldsymbol\theta_0)^T
+I(\boldsymbol\theta_0)^{-1}
+S(\boldsymbol\theta_0)
+\overset{approx}{\sim}\chi^2_k.
+\]
+
+For the one-parameter null $H_0:\theta=\theta_0$,
+\[
+T_{\mathrm{Score}}
+=\frac{S(\theta_0)^2}{I(\theta_0)}.
+\]
+
+Now
+\[
+S(\theta_0)=\frac{x-n\theta_0}{\theta_0(1-\theta_0)},
+\qquad
+I(\theta_0)=\frac{n}{\theta_0(1-\theta_0)}.
+\]
+Therefore
+\[
+T_{\mathrm{Score}}
+=\frac{(x-n\theta_0)^2}{n\theta_0(1-\theta_0)}
+=\frac{(\hat\theta-\theta_0)^2}{\theta_0(1-\theta_0)/n}
+\overset{approx}{\sim}\chi^2_1.
+\]
+
+Equivalently,
+\[
+Z_{\mathrm{Score}}
+=\frac{\hat\theta-\theta_0}{\sqrt{\theta_0(1-\theta_0)/n}},
+\qquad
+T_{\mathrm{Score}}=Z_{\mathrm{Score}}^2.
+\]
+\smallskip
+
+{\bf 6. Pearson chi-square test}
+
+First write the multinomial/vector form. Let
+\[
+\mathbf O=(O_1,\ldots,O_K)^T
+\]
+be the observed count vector. Suppose
+\[
+\mathbf O\sim \mathrm{Multinomial}(n;\theta_1,\ldots,\theta_K),
+\]
+where
+\[
+\boldsymbol\theta=(\theta_1,\ldots,\theta_K)^T,
+\qquad
+\sum_{j=1}^K \theta_j=1.
+\]
+Under the simple null model
+\[
+H_0: \boldsymbol\theta=\boldsymbol\theta_0,
+\qquad
+\boldsymbol\theta_0=(\theta_{01},\ldots,\theta_{0K})^T,
+\]
+the expected count vector is
+\[
+\mathbf E=(E_1,\ldots,E_K)^T=n\boldsymbol\theta_0,
+\qquad
+E_j=n\theta_{0j}.
+\]
+The Pearson chi-square statistic is
+\[
+T_{\mathrm{Pearson}}
+=(\mathbf O-\mathbf E)^T
+\{\mathrm{diag}(\mathbf E)\}^{-1}
+(\mathbf O-\mathbf E)
+=\sum_{j=1}^K \frac{(O_j-E_j)^2}{E_j}.
+\]
+For a simple multinomial null with no parameters estimated from the data,
+\[
+T_{\mathrm{Pearson}}\overset{approx}{\sim}\chi^2_{K-1}.
+\]
+The degrees of freedom are $K-1$, not $K$, because the counts satisfy the constraint $\sum_{j=1}^K O_j=n$.
+If $q$ parameters are estimated under the null model, the approximate degrees of freedom are usually $K-1-q$.
+
+Now reduce this to the two-cell binomial case. The observed count vector is
+\[
+\mathbf O=\begin{pmatrix}O_H\\O_T\end{pmatrix}
+=\begin{pmatrix}x\\n-x\end{pmatrix}.
+\]
+Under $H_0:\theta=\theta_0$, the expected count vector is
+\[
+\mathbf E=\begin{pmatrix}E_H\\E_T\end{pmatrix}
+=\begin{pmatrix}n\theta_0\\n(1-\theta_0)\end{pmatrix}.
+\]
+Thus
+\[
+T_{\mathrm{Pearson}}
+=\frac{(x-n\theta_0)^2}{n\theta_0}
++\frac{\{(n-x)-n(1-\theta_0)\}^2}{n(1-\theta_0)}.
+\]
+Since
+\[
+(n-x)-n(1-\theta_0)=-(x-n\theta_0),
+\]
+we have
+\[
+T_{\mathrm{Pearson}}
+=(x-n\theta_0)^2
+\left\{\frac{1}{n\theta_0}+\frac{1}{n(1-\theta_0)}\right\}.
+\]
+Therefore
+\[
+T_{\mathrm{Pearson}}
+=\frac{(x-n\theta_0)^2}{n\theta_0(1-\theta_0)}
+\overset{approx}{\sim}\chi^2_1.
+\]
+
+In this one-parameter binomial example,
+\[
+T_{\mathrm{Pearson}}=T_{\mathrm{Score}}.
+\]
+\bigskip
+
+{\bf 7. Derive the Pearson chi-square test from the LRT principle}
+
+Let
+\[
+\mathbf O=(O_1,\ldots,O_K)^T\sim
+\mathrm{Multinomial}(n;\theta_1,\ldots,\theta_K),
+\]
+where
+\[
+\boldsymbol\theta=(\theta_1,\ldots,\theta_K)^T,
+\qquad
+\sum_{j=1}^K \theta_j=1.
+\]
+Consider the simple null hypothesis
+\[
+H_0:\boldsymbol\theta=\boldsymbol\theta_0.
+\]
+Under $H_0$, the expected counts are
+\[
+E_j=n\theta_{0j}, \qquad j=1,\ldots,K.
+\]
+The unrestricted and restricted MLE are, respectively, 
+\[
+\hat\theta_j=\frac{O_j}{n},
+\qquad
+\tilde\theta_j=\theta_{0j}=\frac{E_j}{n}.
+\]
+Ignoring constants, the multinomial log-likelihood is
+\[
+\ell(\boldsymbol\theta)=\sum_{j=1}^K O_j\log \theta_j.
+\]
+Therefore the likelihood ratio statistic is
+\[
+T_{\mathrm{LRT}}
+=2\{\ell(\hat{\boldsymbol\theta})-\ell(\boldsymbol\theta_0)\}
+=2\sum_{j=1}^K O_j\log\left(\frac{\hat\theta_j}{\theta_{0j}}\right)=2\sum_{j=1}^K O_j\log\left(\frac{O_j}{E_j}\right).
+\]
+Let 
+\[
+\Delta_j=O_j-E_j,
+\qquad u_j=\frac{\Delta_j}{E_j}.
+\]
+Then
+\[
+\frac{O_j}{E_j}=1+\frac{\Delta_j}{E_j}=1+u_j,
+\qquad 
+{O_j}=E_j(1+u_j).
+\]
+Using the second-order Taylor expansion
+\[
+\log(1+u)=u-\frac{u^2}{2}+O(u^3),
+\]
+we get
+\[
+\begin{aligned}
+2O_j \log\left(\frac{O_j}{E_j}\right)
+&= 2E_j(1+u_j)\log(1+u_j) \\
+&= 2E_j(1+u_j)\left(u_j-\frac{u_j^2}{2}+O(u_j^3)\right) \\
+&= 2E_j\left(u_j+\frac{u_j^2}{2}+O(u_j^3)\right)\\
+&= 2\Delta_j+\frac{\Delta_j^2}{E_j}+O\left(\frac{\Delta_j^3}{E_j^2}\right).
+\end{aligned}
+\]
+Summing over cells gives
+\[
+T_{\mathrm{LRT}}
+=2\sum_{j=1}^K \Delta_j+
+\sum_{j=1}^K \frac{\Delta_j^2}{E_j}
++\text{higher-order terms}.
+\]
+Because both observed and expected counts sum to $n$,
+\[
+\sum_{j=1}^K \Delta_j
+=\sum_{j=1}^K O_j-
+\sum_{j=1}^K E_j
+=n-n=0.
+\]
+Thus, to second order,
+\[
+T_{\mathrm{LRT}}
+\approx
+\sum_{j=1}^K \frac{(O_j-E_j)^2}{E_j}
+=T_{\mathrm{Pearson}}.
+\]
+
+This derivation explains why the Pearson statistic has the form ``observed minus expected, squared and divided by expected.'' It is a second-order likelihood-based approximation to the likelihood ratio statistic for multinomial counts. When the expected cell counts are large, the higher-order terms are small, and both statistics have the same asymptotic chi-square reference distribution.
+\smallskip
+
+{\bf 8. Numerical calculation}
+
+Now use
+\[
+n=100,
+\qquad
+x=57,
+\qquad
+\theta_0=0.5.
+\]
+
+The MLE is
+\[
+\hat\theta=\frac{x}{n}=\frac{57}{100}=0.57.
+\]
+
+The LRT statistic is
+\[
+T_{\mathrm{LRT}}
+=2\left[
+57\log\left(\frac{57}{100(0.5)}\right)
++43\log\left(\frac{43}{100(0.5)}\right)
+\right]
+\approx 1.966.
+\]
+
+The Wald statistic is
+\[
+T_{\mathrm{Wald}}
+=\frac{100(0.57-0.5)^2}{0.57(0.43)}
+\approx 2.00.
+\]
+
+The score statistic is
+\[
+T_{\mathrm{Score}}
+=\frac{\{57-100(0.5)\}^2}{100(0.5)(0.5)}
+=1.96.
+\]
+
+The Pearson chi-square statistic is
+\[
+X^2
+=\frac{(57-50)^2}{50}+\frac{(43-50)^2}{50}
+=1.96.
+\]
+
+At the $5\%$ level, the critical value from $\chi^2_1$ is approximately (recall $\chi^2_1$ is from $Z^2$, where $Z\sim N(0,1)$),
+\[
+1.96^2=3.84.
+\]
+Since all four test statistics are less than $3.84$, we do not reject
+\[
+H_0:\theta=0.5.
+\]
+
+{\bf 9. Food for thought}
+
+Many of you may already know the usual normal-approximation test for one proportion:
+\[
+Z
+=
+\frac{\hat\theta-\theta_0}
+{\sqrt{\theta_0(1-\theta_0)/n}}.
+\]
+But do you know that this is the score test?
+
+For the binomial model,
+\[
+T_{\mathrm{Score}}
+=
+\frac{S(\theta_0)^2}{I(\theta_0)}
+=
+\frac{(x-n\theta_0)^2}{n\theta_0(1-\theta_0)}
+=
+\left(
+\frac{\hat\theta-\theta_0}
+{\sqrt{\theta_0(1-\theta_0)/n}}
+\right)^2.
+\]
+Therefore,
+\[
+Z^2=T_{\mathrm{Score}}.
+\]
+
+The Wald test looks similar, but uses the variance estimated at the MLE:
+\[
+T_{\mathrm{Wald}}
+=
+\left(
+\frac{\hat\theta-\theta_0}
+{\sqrt{\hat\theta(1-\hat\theta)/n}}
+\right)^2.
+\]
+The distinction is simple but important: the score test uses information under the null value $\theta_0$, while the Wald test uses information at the estimated value $\hat\theta$.
+
+
+Another way to think about the four tests is that all of them compare the observed data with what is expected under the null model. They differ in how that comparison is made.
+
+For example, in the binomial case, the observed number of heads is $x$, and under $H_0$ the expected number of heads is $n\theta_0$. Thus the basic discrepancy is
+\[
+x-n\theta_0.
+\]
+The score test contains this observed-minus-expected term directly:
+\[
+S(\theta_0)=\frac{x-n\theta_0}{\theta_0(1-\theta_0)}.
+\]
+In the general score-test formula this may look less like an ``observed versus expected'' comparison, because the score is a derivative of the log-likelihood. But remember that, for an interior MLE,
+\[
+S(\hat\theta)=0.
+\]
+So the score test asks whether the score at the null value, $S(\theta_0)$, is far from the zero score achieved at the MLE.
+
+There are many possible ways to measure observed-versus-expected discrepancy. For example, one might compare
+\[
+\text{observed}-\text{expected} \quad \text{with }0,
+\]
+or
+\[
+\frac{\text{observed}}{\text{expected}} \quad \text{with }1,
+\]
+or
+\[
+\log(\text{observed})-\log(\text{expected}) \quad \text{with }0.
+\]
+The question is not only which discrepancy is intuitive, but also how to scale it and what reference distribution it has. Different likelihood-based tests choose different, principled forms: the Wald test compares $\hat\theta$ with $\theta_0$ using the estimated variance at $\hat\theta$; the score test compares the score at $\theta_0$ with zero using information under $H_0$; the LRT compares the maximized likelihood with the likelihood under $H_0$; and the Pearson test compares observed and expected counts directly after scaling by the expected counts.
+
+
+\end{document}
