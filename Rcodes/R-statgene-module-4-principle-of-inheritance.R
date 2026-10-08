@@ -26,7 +26,7 @@ Y=alpha+beta*G+rnorm(n,mean=0,sd=sigma)
 plot(G,Y,xlim=c(-0.5,2),cex=0.7, main=paste("Y = alpha + beta G + e"))
 title(line=0.5,paste("alpha=",alpha,", beta=",beta, ", sigma=", sigma, ";  n=",n,", MAF=",p,sep=""),cex.main=0.8)
 
-## Add the normal density and show the mean location for each G category, both sample estimate the true mean.
+## Add the normal density and show the mean location for each G category; both the sample and the true mean.
 dx=seq(alpha-3*sigma, alpha+2*beta+3*sigma, 0.01)
 
 thisG=0
@@ -76,9 +76,9 @@ pE=0.3
 # E component
 nE=rbinom(1,size=n,prob=pE)
 E=c(rep(0,(n-nE)),rep(1,nE))
-# make sure that E is indepedent of G.
+# make sure that E is independent of G.
 E=sample(E)
-# the mean and variance of the E, 
+# the mean and variance of E, 
 # this will be related to the mena and variance of Y|G.
 muE=pE
 varE=pE*(1-pE)
@@ -98,7 +98,7 @@ title(line=0.5,paste("alpha=",alpha,", gamma=",gamma, ", sigma=", sigma, ";  n="
 #dx=seq(alpha-4, alpha+2*gamma*pE+5, 0.01)
 dx=seq(alpha-3*sigma, alpha+2*gamma*pE+3*sqrt(4*gamma*varE+sigma^2), 0.01)
 
-## the mean and variance of the E and this will affect the mean and variance of Y for each genotype group.
+## the mean and variance of E, and this will affect the mean and variance of Y for each genotype group.
 thisG=0
 thismu=alpha+thisG*gamma*muE
 thisvar=(thisG*gamma)^2*varE+sigma^2
